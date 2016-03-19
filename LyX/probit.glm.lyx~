@@ -119,8 +119,8 @@ Implementation
 \end_layout
 
 \begin_layout Standard
-The file probit.reg.sim.R simulates data according to the model statement presented
- below, and probit.reg.mcmc.R contains the MCMC algorithm for model fitting.
+The file probit.glm.sim.R simulates data according to the model statement presented
+ below, and probit.glm.mcmc.R contains the MCMC algorithm for model fitting.
  
 \end_layout
 
@@ -200,16 +200,6 @@ Observation model auxiliary variable (
 \begin_inset VSpace bigskip
 \end_inset
 
-
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\emph on
-\begin_inset Newpage newpage
-\end_inset
-
 Regression coefficients (
 \begin_inset Formula $\boldsymbol{\beta}$
 \end_inset
@@ -221,12 +211,10 @@ Regression coefficients (
 \begin{eqnarray*}
 [\boldsymbol{\beta}|\cdot] & \propto & [\mathbf{u}|\boldsymbol{\beta},\sigma^{2}][\boldsymbol{\beta}]\\
  & \propto & {\cal N}(\mathbf{u}|\mathbf{X}\boldsymbol{\beta},\mathbf{1}){\cal N}(\boldsymbol{\beta}|\mathbf{0},\sigma_{\beta}^{2}\mathbf{I})\\
- & \propto & \exp\left\{ -\frac{1}{2}\left(\mathbf{u}-\mathbf{X}\boldsymbol{\beta}\right)^{\prime}\left(\mathbf{u}-\mathbf{X}\boldsymbol{\beta}\right)\right\} \\
- &  & \qquad\exp\left\{ -\frac{1}{2}\left(\boldsymbol{\beta}-\mathbf{0}\right)^{\prime}\left(\sigma_{\beta}^{2}\mathbf{I}\right)^{-1}\left(\boldsymbol{\beta}-\mathbf{0}\right)\right\} \\
- & \propto & \exp\left\{ -\frac{1}{2}\left(\mathbf{u}-\mathbf{X}\boldsymbol{\beta}\right)^{\prime}\left(\mathbf{u}\mathbf{-X}\boldsymbol{\beta}\right)\right\} \\
- &  & \qquad\exp\left\{ -\frac{1}{2}\left(\boldsymbol{\beta}-\mathbf{0}\right)^{\prime}\left(\sigma_{\beta}^{2}\mathbf{I}\right)^{-1}\left(\boldsymbol{\beta}-\mathbf{0}\right)\right\} \\
+ & \propto & \exp\left\{ -\frac{1}{2}\left(\mathbf{u}-\mathbf{X}\boldsymbol{\beta}\right)^{\prime}\left(\mathbf{u}-\mathbf{X}\boldsymbol{\beta}\right)\right\} \exp\left\{ -\frac{1}{2}\left(\boldsymbol{\beta}-\mathbf{0}\right)^{\prime}\left(\sigma_{\beta}^{2}\mathbf{I}\right)^{-1}\left(\boldsymbol{\beta}-\mathbf{0}\right)\right\} \\
+ & \propto & \exp\left\{ -\frac{1}{2}\left(\mathbf{u}-\mathbf{X}\boldsymbol{\beta}\right)^{\prime}\left(\mathbf{u}\mathbf{-X}\boldsymbol{\beta}\right)\right\} \exp\left\{ -\frac{1}{2}\left(\boldsymbol{\beta}-\mathbf{0}\right)^{\prime}\left(\sigma_{\beta}^{2}\mathbf{I}\right)^{-1}\left(\boldsymbol{\beta}-\mathbf{0}\right)\right\} \\
  & \propto & \exp\left\{ -\frac{1}{2}\left(-2\mathbf{u}^{\prime}\mathbf{X}\boldsymbol{\beta}+\boldsymbol{\beta}^{\prime}\mathbf{X}^{\prime}\mathbf{X}\boldsymbol{\beta}\right)\right\} \exp\left\{ -\frac{1}{2}\left(\boldsymbol{\beta}^{\prime}\left(\sigma_{\beta}^{2}\mathbf{I}\right)^{-1}\boldsymbol{\beta}\right)\right\} \\
- &  & \propto\exp\left\{ -\frac{1}{2}\left(-2\left(\mathbf{u}^{\prime}\mathbf{X}\right)\boldsymbol{\beta}+\boldsymbol{\beta}^{\prime}\left(\mathbf{X}^{\prime}\mathbf{X}+\left(\sigma_{\beta}^{2}\mathbf{I}\right)^{-1}\right)\boldsymbol{\beta}\right)\right\} \\
+ & \propto & \exp\left\{ -\frac{1}{2}\left(-2\left(\mathbf{u}^{\prime}\mathbf{X}\right)\boldsymbol{\beta}+\boldsymbol{\beta}^{\prime}\left(\mathbf{X}^{\prime}\mathbf{X}+\left(\sigma_{\beta}^{2}\mathbf{I}\right)^{-1}\right)\boldsymbol{\beta}\right)\right\} \\
  & = & {\cal N}(\mathbf{A}^{-1}\mathbf{b},\mathbf{A}^{-1})
 \end{eqnarray*}
 

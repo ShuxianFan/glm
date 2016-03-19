@@ -26,10 +26,10 @@ plot(time,y,ylim=range(c(y,X%*%beta)))
 lines(time,X%*%beta,col=2)
 
 # Fit model
-source('~/Documents/git/GLM/probit.reg.mcmc.R', chdir = TRUE)
+source('~/Documents/git/GLM/probit.glm.mcmc.R', chdir = TRUE)
 start <- list(beta=beta)
 priors <- list(mu.beta=rep(0,qX),Sigma.beta=diag(qX)*100)
-out1 <- probit.reg.mcmc(y,X,priors,start,1000)
+out1 <- probit.glm.mcmc(y,X,priors,start,1000)
 
 matplot(out1$beta,type="l",lty=1);abline(h=beta,col=1:3,lty=2)
 boxplot(pnorm(out1$u),col=8,outline=FALSE)

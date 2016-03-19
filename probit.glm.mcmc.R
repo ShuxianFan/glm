@@ -1,4 +1,4 @@
-probit.reg.mcmc <- function(y,X,priors,start,n.mcmc){
+probit.glm.mcmc <- function(y,X,priors,start,n.mcmc){
 
 	###
 	### Brian M. Brost (10 AUG 2015)

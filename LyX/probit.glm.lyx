@@ -79,7 +79,7 @@
 
 \shape smallcaps
 \size larger
-Probit Regression Model for Binary Data
+Generalized Linear Model for Binary Data using the Probit Link
 \end_layout
 
 \begin_layout Standard
@@ -119,8 +119,8 @@ Implementation
 \end_layout
 
 \begin_layout Standard
-The file probit.reg.sim.R simulates data according to the model statement presented
- below, and probit.reg.mcmc.R contains the MCMC algorithm for model fitting.
+The file probit.glm.sim.R simulates data according to the model statement presented
+ below, and probit.glm.mcmc.R contains the MCMC algorithm for model fitting.
  
 \end_layout
 
