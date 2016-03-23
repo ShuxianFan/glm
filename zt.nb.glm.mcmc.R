@@ -81,6 +81,7 @@ zt.nb.glm.mcmc <- function(z,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
   
 	beta.save <- matrix(0,n.mcmc,qX)  # rsf coefficients
 	alpha.save <- numeric(n.mcmc)  # over-dispersion parameter
+	
 	keep <- list(beta=0,alpha=0)
 	keep.tmp <- keep  # track MH accpetance rate for adaptive tuning
 	Tb <- 50  # frequency of adaptive tuning
@@ -127,7 +128,6 @@ zt.nb.glm.mcmc <- function(z,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 
 		alpha.star <- rnorm(1,alpha,tune$alpha)
 		if(alpha.star>0){
-			lambda.star <- exp(X%*%beta.star)  # mean of negative binomial
 	  		mh.0.alpha <- sum(dnbinom(z,size=alpha,mu=lambda,log=TRUE))+
 				dgamma(alpha,shape=a,rate=b,log=TRUE)
 			mh.star.alpha <- sum(dnbinom(z,size=alpha.star,mu=lambda,log=TRUE))+
