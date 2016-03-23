@@ -1,0 +1,33 @@
+
+rm(list=ls())
+
+##########################################################
+### Simulate data for zero-truncated negative binomial GLM
+##########################################################
+
+n <- 10000  # number of obserations to simulate
+X <- cbind(1,rnorm(n))  # design matrix
+qX <- ncol(X)
+beta <- c(1.25,2)  # coefficients
+mu <- exp(X%*%beta)  # intensity of Poisson process
+hist(mu,breaks=100)
+alpha <- 2 # dispersion parameter; var(z)=mu+mu^2/alpha, i.e.,  alpha=\infty yields Poisson
+z <- rnbinom(n,size=alpha,mu=mu)  # observed counts
+hist(z,breaks=20)
+
+sum(z>0)
+
+##########################################################
+### Fit model
+##########################################################
+
+source('~/Documents/git/GLM/zt.nb.glm.mcmc.R')
+priors <- list(sigma.beta=5,a=1,b=0.1)
+# hist(rgamma(1000,1,0.01),breaks=100)  # vague parameterization
+tune <- list(beta=0.01,alpha=0.01)
+start <- list(beta=beta,alpha=alpha)
+out1 <- zt.nb.glm.mcmc(z[z>0],X[z>0,],priors,start,tune,n.mcmc=1000)
+
+matplot(out1$beta, type="l", lty=1);abline(h=beta,col=1:qX,lty=3)
+matplot(out1$alpha, type="l", lty=1);abline(h=alpha,col=1,lty=3)
+

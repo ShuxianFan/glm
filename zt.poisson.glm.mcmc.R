@@ -1,16 +1,16 @@
 #
 #
-# Bayesian Poisson generalized linear model
+# Bayesian zero-truncated Poisson generalized linear model
 #
-# Function name: poisson.glm.MCMC
+# Function name: zt.poisson.glm.MCMC
 #
 # Author: Brian M. Brost
 # Contact: bmbrost@gmail.com
 #
-# Last updated: 18 MAR 2016
+# Last updated: 23 MAR 2016
 #
 # Model statement:
-#	z_i ~ Pois(lambda_i)
+#	z_i|z_i>0 ~ zero-truncatedPois(lambda_i)
 #	log(lambda_i) = x_i%*%beta
 #	beta ~ N(0,sigma.beta^2*I)
 #
@@ -22,7 +22,7 @@
 #
 # z - Vector of length n containing the count of observations corresponding to 
 # 	each row in the design matrix X. Note that the value of z[1] corresponds to
-#	X[1,], z[2] corresponds to X[2,], etc.
+#	X[1,], z[2] corresponds to X[2,], etc. Also note that z>0.
 # X - Design matrix of dimension n x qX containing covariates (plus
 #	intercept) for which inference is desired
 # priors - List of priors containing the following elements:
@@ -36,7 +36,7 @@
 #
 #
 
-poisson.glm.mcmc <- function(z,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
+zt.poisson.glm.mcmc <- function(z,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 
 	###
 	###  Libraries and Subroutines
@@ -49,6 +49,11 @@ poisson.glm.mcmc <- function(z,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 		a <- min(0.025,1/sqrt(k))
 		exp(ifelse(keep<target,log(tune)-a,log(tune)+a))
 	}
+
+	zt.dpois <- function(z,X,beta){  # log-likelihood for zero-truncated Poisson
+		Xb <- X%*%beta
+		z*Xb-exp(Xb)-lfactorial(z)-log(1-exp(-exp(Xb)))	
+	}
 	
 	
 	###
@@ -56,9 +61,8 @@ poisson.glm.mcmc <- function(z,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 	###
 
 	qX <- ncol(X)  # number of betas
-	
+
 	beta <- start$beta
-	lambda <- exp(X%*%beta)  # intensity of Poisson process
 
 	mu.beta <- rep(0,qX)  # mean of normal prior on beta
 	sigma.beta <- priors$sigma.beta
@@ -97,14 +101,10 @@ poisson.glm.mcmc <- function(z,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 		### 
 		
 		beta.star <- rnorm(qX,beta,tune$beta)
-		lambda.star <- exp(X%*%beta.star)  # intensity of Poisson process
-  		mh.0 <- sum(dpois(z,lambda,log=TRUE))+
-			sum(dnorm(beta,mu.beta,sigma.beta,log=TRUE))
-		mh.star <- sum(dpois(z,lambda.star,log=TRUE))+
-			sum(dnorm(beta.star,mu.beta,sigma.beta,log=TRUE))
+  		mh.0 <- sum(zt.dpois(z,X,beta))+sum(dnorm(beta,mu.beta,sigma.beta,log=TRUE))
+		mh.star <- sum(zt.dpois(z,X,beta.star))+sum(dnorm(beta.star,mu.beta,sigma.beta,log=TRUE))
 		if(exp(mh.star-mh.0)>runif(1)){
 			beta <- beta.star
-			lambda <- lambda.star
 			keep$beta <- keep$beta+1
 			keep.tmp$beta <- keep.tmp$beta+1
 		}
