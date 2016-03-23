@@ -22,7 +22,7 @@ source('~/Documents/git/GLM/zt.poisson.glm.mcmc.R')
 priors <- list(sigma.beta=5)
 tune <- list(beta=0.01)
 start <- list(beta=beta)
-out1 <- zt.poisson.glm.mcmc(z[z>0],X[z>0,],priors,start,tune,n.mcmc=5000)
+out1 <- zt.poisson.glm.mcmc(z[z>0],X[z>0,],priors,start,tune,adapt=TRUE,n.mcmc=5000)
 
 matplot(out1$beta, type="l", lty=1);abline(h=beta,col=1:qX,lty=3)
 

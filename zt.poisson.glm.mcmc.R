@@ -10,7 +10,7 @@
 # Last updated: 23 MAR 2016
 #
 # Model statement:
-#	z_i|z_i>0 ~ zero-truncatedPois(lambda_i)
+#	z_i|z_i>0 ~ ZTP(lambda_i)
 #	log(lambda_i) = x_i%*%beta
 #	beta ~ N(0,sigma.beta^2*I)
 #

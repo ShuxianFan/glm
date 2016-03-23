@@ -10,7 +10,7 @@
 # Last updated: 23 MAR 2016
 #
 # Model statement:
-#	z_i|z_i>0 ~ Zero-truncatedNB(lambda_i,alpha)
+#	z_i|z_i>0 ~ ZTNB(lambda_i,alpha)
 #	log(lambda_i) = x_i%*%beta
 #	beta ~ N(0,sigma.beta^2*I)
 # 	alpha ~ gamma(a,b)	
