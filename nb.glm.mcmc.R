@@ -10,11 +10,11 @@
 # Last updated: 23 MAR 2016
 #
 # Model statement:
-#	z_i ~ NB(lambda_i,k)
+#	z_i ~ NB(lambda_i,alpha)
 #	log(lambda_i) = x_i%*%beta
 #	beta ~ N(0,sigma.beta^2*I)
-# 	k ~ gamma(a,b)	
-#	note: E[k]=a/b and Var[alpha]=a/(b^2)
+# 	alpha ~ gamma(a,b)	
+#	note: E[alpha]=a/b and Var[alpha]=a/(b^2)
 #
 # Reference:
 #

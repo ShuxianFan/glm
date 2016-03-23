@@ -51,6 +51,7 @@ zt.poisson.glm.mcmc <- function(z,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 	}
 
 	zt.dpois <- function(z,X,beta){  # log-likelihood for zero-truncated Poisson
+		# See Eq. 11.1 in Hilbe. 2011. Negative binomial regression. 
 		Xb <- X%*%beta
 		z*Xb-exp(Xb)-lfactorial(z)-log(1-exp(-exp(Xb)))	
 	}

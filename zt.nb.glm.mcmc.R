@@ -10,11 +10,11 @@
 # Last updated: 23 MAR 2016
 #
 # Model statement:
-#	z_i|z_i>0 ~ Zero-truncatedNB(lambda_i,k)
+#	z_i|z_i>0 ~ Zero-truncatedNB(lambda_i,alpha)
 #	log(lambda_i) = x_i%*%beta
 #	beta ~ N(0,sigma.beta^2*I)
-# 	k ~ gamma(a,b)	
-#	note: E[k]=a/b and Var[alpha]=a/(b^2)
+# 	alpha ~ gamma(a,b)	
+#	note: E[alpha]=a/b and Var[alpha]=a/(b^2)
 #
 # Reference:
 #
@@ -104,10 +104,12 @@ zt.nb.glm.mcmc <- function(z,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 		### Update beta
 		### 
 		
+		# See Zuur et al. 2007. Mixed effects models and 
+		# extensions in ecology with R 
 		beta.star <- rnorm(qX,beta,tune$beta)
-		lambda.star <- exp(X%*%beta.star)  # mean of negative binomial
-  		mh.0.beta <- sum(dnbinom(z,size=alpha,mu=lambda,log=TRUE))-
-  			sum(log(1-(alpha/(lambda+alpha))^alpha))+
+		lambda.star <- exp(X%*%beta.star)  # mean of negative binomial	
+		mh.0.beta <- sum(dnbinom(z,size=alpha,mu=lambda,log=TRUE))-
+ 			sum(log(1-(alpha/(lambda+alpha))^alpha))+
 			sum(dnorm(beta,mu.beta,sigma.beta,log=TRUE))
 		mh.star.beta <- sum(dnbinom(z,size=alpha,mu=lambda.star,log=TRUE))-
 			sum(log(1-(alpha/(lambda.star+alpha))^alpha))+
