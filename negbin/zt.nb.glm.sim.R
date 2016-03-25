@@ -8,7 +8,7 @@ rm(list=ls())
 n <- 10000  # number of obserations to simulate
 X <- cbind(1,rnorm(n))  # design matrix
 qX <- ncol(X)
-beta <- c(1.25,2)  # coefficients
+beta <- c(-1,3)  # coefficients
 mu <- exp(X%*%beta)  # intensity of Poisson process
 hist(mu,breaks=100)
 alpha <- 2 # dispersion parameter; var(z)=mu+mu^2/alpha, i.e.,  alpha=\infty yields Poisson
@@ -21,8 +21,8 @@ sum(z>0)
 ### Fit model
 ##########################################################
 
-source('~/Documents/git/GLM/zt.nb.glm.mcmc.R')
-priors <- list(sigma.beta=5,a=1,b=0.1)
+source('~/Documents/git/GLM/negbin/zt.nb.glm.mcmc.R')
+priors <- list(sigma.beta=10,a=1,b=0.1)
 # hist(rgamma(1000,1,0.01),breaks=100)  # vague parameterization
 tune <- list(beta=0.01,alpha=0.1)
 start <- list(beta=beta,alpha=alpha)
@@ -32,6 +32,7 @@ matplot(out1$beta, type="l", lty=1);abline(h=beta,col=1:qX,lty=3)
 apply(out1$beta,2,mean)
 matplot(out1$alpha, type="l", lty=1);abline(h=alpha,col=1,lty=3)
 mean(out1$alpha)
+
 
 
 # Compare to canned funcation for zero-truncated NB regression

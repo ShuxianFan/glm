@@ -18,7 +18,7 @@ sum(z>0)
 ### Fit model
 ##########################################################
 
-source('~/Documents/git/GLM/zt.poisson.glm.mcmc.R')
+source('~/Documents/git/GLM/poisson/zt.poisson.glm.mcmc.R')
 priors <- list(sigma.beta=5)
 tune <- list(beta=0.01)
 start <- list(beta=beta)

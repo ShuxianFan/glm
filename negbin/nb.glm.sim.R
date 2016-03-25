@@ -20,7 +20,7 @@ hist(z,breaks=20)
 ### Fit model
 ##########################################################
 
-source('~/Documents/git/GLM/nb.glm.mcmc.R')
+source('~/Documents/git/GLM/negbin/nb.glm.mcmc.R')
 priors <- list(sigma.beta=5,a=1,b=0.1)
 # hist(rgamma(1000,1,0.01),breaks=100)  # vague parameterization
 tune <- list(beta=0.1,alpha=0.1)
@@ -29,4 +29,3 @@ out1 <- nb.glm.mcmc(z,X,priors,start,tune,adapt=TRUE,n.mcmc=15000)
 
 matplot(out1$beta, type="l", lty=1);abline(h=beta,col=1:qX,lty=3)
 matplot(out1$alpha, type="l", lty=1);abline(h=alpha,col=1,lty=3)
-

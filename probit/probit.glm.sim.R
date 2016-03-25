@@ -26,7 +26,7 @@ plot(time,y,ylim=range(c(y,X%*%beta)))
 lines(time,X%*%beta,col=2)
 
 # Fit model
-source('~/Documents/git/GLM/probit.glm.mcmc.R', chdir = TRUE)
+source('~/Documents/git/GLM/probit/probit.glm.mcmc.R', chdir = TRUE)
 start <- list(beta=beta)
 priors <- list(mu.beta=rep(0,qX),Sigma.beta=diag(qX)*100)
 out1 <- probit.glm.mcmc(y,X,priors,start,1000)
