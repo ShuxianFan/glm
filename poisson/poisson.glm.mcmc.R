@@ -50,7 +50,6 @@ poisson.glm.mcmc <- function(z,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 		exp(ifelse(keep<target,log(tune)-a,log(tune)+a))
 	}
 	
-	
 	###
 	###  Setup variable, starting values, and priors
 	###
@@ -112,7 +111,7 @@ poisson.glm.mcmc <- function(z,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 		###
 		###  Save samples 
 	    ###
-
+# browser()
 		beta.save[k,] <- beta
 	}
 	

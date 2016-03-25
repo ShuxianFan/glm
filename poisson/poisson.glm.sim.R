@@ -16,7 +16,7 @@ z <- rpois(n,lambda)  # observed counts
 ### Fit model
 ##########################################################
 
-source('~/Documents/git/GLM/poisson.glm.mcmc.R')
+source('~/Documents/git/GLM/poisson/poisson.glm.mcmc.R')
 priors <- list(sigma.beta=5)
 tune <- list(beta=0.25)
 start <- list(beta=coef(glm(z ~ 0+X, family=poisson())))
