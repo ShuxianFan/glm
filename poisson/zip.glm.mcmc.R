@@ -1,38 +1,44 @@
 #
 #
-# Bayesian Poisson generalized linear model
+# Bayesian zero-inflated Poisson generalized linear model
 #
 # Function name: zip.glm.MCMC
 #
 # Author: Brian M. Brost
 # Contact: bmbrost@gmail.com
 #
-# Last updated: 18 MAR 2016
+# Last updated: 05 April 2016
 #
 # Model statement:
-#	z_i ~ Pois(lambda_i)
+#	y_i ~ Pois(lambda_i), z_i=1
+#	y_i ~ 0, z_i=0
+# 	z_i ~ Bern(p)
 #	log(lambda_i) = x_i%*%beta
 #	beta ~ N(0,sigma.beta^2*I)
+#	p ~ Beta(a,b)
 #
 # Reference:
 #
-# Required R packages: mvtnorm (if using multivariate normal prior on beta)
+# Required R packages: 
 #
 # Inputs:
 #
-# z - Vector of length n containing the count of observations corresponding to 
+# y - vector of length n containing the count of observations corresponding to 
 # 	each row in the design matrix X. Note that the value of z[1] corresponds to
 #	X[1,], z[2] corresponds to X[2,], etc.
-# X - Design matrix of dimension n x qX containing covariates (plus
+# X - design matrix of dimension n x qX containing covariates (plus
 #	intercept) for which inference is desired
-# priors - List of priors containing the following elements:
+# priors - dist of priors containing the following elements:
 #	1. sigma.beta - Standard deviation of normal prior on beta
-# start - List of starting values containing the following elements:
-#	1. beta - Vector of starting values for coefficients
-# tune - List of tuning parameters containing the following elements:
-#	1. beta - Tuning parameter for Metropolis-Hasting update on beta
-# adapt - Switch to enable adapative tuning (TRUE/FALSE)
-# n.mcmc - Number of desired MCMC iterations
+#	2. a - first scale parameter of beta prior on p
+#	3. b - second scale parameter of beta prior on p
+# start - list of starting values containing the following elements:
+#	1. beta - vector of starting values for coefficients
+#	2. p - probability associated with z, the latent mixture component indicator variable
+# tune - list of tuning parameters containing the following elements:
+#	1. beta - tuning parameter for Metropolis-Hasting update on beta
+# adapt - switch to enable adapative tuning (TRUE/FALSE)
+# n.mcmc - number of desired MCMC iterations
 #
 #
 
@@ -55,13 +61,14 @@ zip.glm.mcmc <- function(y,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 	###
 # browser()
 	qX <- ncol(X)  # number of betas
-	y0 <- which(y==0) 
+	y0 <- which(y==0)  # zero valued observations
 	n.y0 <- length(y0)
-	z <- rep(1,n)
+	n <- length(y)
+	z <- rep(1,n)  # latent mixture component indicator
 	
 	beta <- start$beta
 	lambda <- exp(X%*%beta)  # intensity of Poisson process
-	p <- start$p
+	p <- start$p 
 	
 	mu.beta <- rep(0,qX)  # mean of normal prior on beta
 	sigma.beta <- priors$sigma.beta
@@ -104,31 +111,24 @@ zip.glm.mcmc <- function(y,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 		p.tmp <- p*exp(-lambda[y0])
 		p.tmp <- p.tmp/(p.tmp+1-p)  
 		z[y0] <- rbinom(n.y0,1,p.tmp)
-# z <- start$z	
+
 		###
 		### Update p
 		###
 
 		sum.z <- sum(z)
 		p <- rbeta(1,sum.z+1,n-sum.z+1)
-# p <- start$p
+
 		###
 		### Update beta
 		### 
 		
 		beta.star <- rnorm(qX,beta,tune$beta)
 		lambda.star <- exp(X%*%beta.star)  # intensity of Poisson process
-# browser()
-  		# mh.0 <- sum(log(dpois(y[z==1],lambda[z==1])+sum(z==0)))+
-  			# sum(dnorm(beta,mu.beta,sigma.beta,log=TRUE))
-		# mh.star <- sum(log(dpois(y[z==1],lambda.star[z==1])+sum(z==0)))+
-  			# sum(dnorm(beta.star,mu.beta,sigma.beta,log=TRUE))
-  		
   		mh.0 <- sum(z*dpois(y,lambda,log=TRUE))+
 			sum(dnorm(beta,mu.beta,sigma.beta,log=TRUE))
 		mh.star <- sum(z*dpois(y,lambda.star,log=TRUE))+
 			sum(dnorm(beta.star,mu.beta,sigma.beta,log=TRUE))
-
 		if(exp(mh.star-mh.0)>runif(1)){
 			beta <- beta.star
 			lambda <- lambda.star
@@ -139,7 +139,7 @@ zip.glm.mcmc <- function(y,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 		###
 		###  Save samples 
 	    ###
-# browser()
+
 		beta.save[k,] <- beta
 		p.save[k] <- p
 		z.save[k,] <- z
