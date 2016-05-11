@@ -14,12 +14,12 @@ MCMC algorithms for implementing generalized linear models
 - *binomial.logit.glm.sim.R*: Simulate data and fit model
 - *binomial.logit.glm.mcmc.R*: MCMC algorithm for parameter estimation
 
-##### Poisson generalized linear model for count data
-- *poisson.glm.pdf.R*: Model statement and full conditional distributions
-- *poisson.glm.sim.R*: Simulate data and fit model
-- *poisson.glm.mcmc.R**: MCMC algorithm for parameter estimation
-
 ##### Negative binomial generalized linear model for count data
 - *nb.glm.pdf.R*: Model statement and full conditional distributions
 - *nb.glm.sim.R*: Simulate data and fit model
 - *nb.glm.mcmc.R*: MCMC algorithm for parameter estimation
+
+##### Poisson generalized linear model for count data
+- *poisson.glm.pdf.R*: Model statement and full conditional distributions
+- *poisson.glm.sim.R*: Simulate data and fit model
+- *poisson.glm.mcmc.R**: MCMC algorithm for parameter estimation
