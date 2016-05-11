@@ -5,9 +5,9 @@ MCMC algorithms for implementing generalized linear models
 #### Contents
 
 ##### Generalized linear model for binary data using a probit link
-- **binary.probit.glm.pdf.R**: Model statement and full conditional distributions
-- **binary.probit.glm.sim.R**: Simulate data and fit model
-- *binary.probit.glm.mcmc.R*: MCMC algorithm for parameter estimation
+ *binary.probit.glm.pdf.R*: Model statement and full conditional distributions
+ *binary.probit.glm.sim.R*: Simulate data and fit model
+ *binary.probit.glm.mcmc.R*: MCMC algorithm for parameter estimation
 	- **binary.probit.glm.mcmc.R**: MCMC algorithm for parameter estimation
 
 
