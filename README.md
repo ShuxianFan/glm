@@ -8,6 +8,7 @@ MCMC algorithms for implementing generalized linear models
 - **binary.probit.glm.sim.R**: Simulate data according to model specification of binary.probit.glm.mcmc.R
 - **binary.probit.glm.mcmc.R**: MCMC algorithm for estimating parameters of GLM for binary data with probit link
 
+
 - **binomial.logit.glm.mcmc.R**: MCMC algorithm for estimating parameters of GLM for binomially distributed data with logit link
 - **binomial.logit.glm.sim.R**: Simulate data according to model specification of binomial.logit.glm.mcmc.R
 - **binomial.logit.glm.pdf.R**: Model statement and full conditional distributions corresponding to binomial.logit.glm.mcmc.R
