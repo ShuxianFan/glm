@@ -1,13 +1,13 @@
 #
 #
-# Bayesian binomial generalized linear model
+# Bayesian generalized linear model for binomially distributed data using logit link
 #
-# Function name: binomial.glm.MCMC
+# Function name: binomial.logit.glm.MCMC
 #
 # Author: Brian M. Brost
 # Contact: bmbrost@gmail.com
 #
-# Last updated: 02 APR 2016
+# Last updated: 11 MAY 2016
 #
 # Model statement:
 #	z_i ~ Binom(N_i,p_i)
@@ -37,7 +37,7 @@
 #
 #
 
-binomial.glm.mcmc <- function(z,N,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
+binomial.logit.glm.mcmc <- function(z,N,X,priors,start,tune,adapt=TRUE,n.mcmc=1000){
 
 	###
 	###  Libraries and Subroutines

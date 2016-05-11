@@ -1,17 +1,40 @@
-probit.glm.mcmc <- function(y,X,priors,start,n.mcmc){
+#
+#
+# Bayesian generalized linear model for binary data with probit link
+#
+# Function name: binary.probit.glm.MCMC
+#
+# Author: Brian M. Brost
+# Contact: bmbrost@gmail.com
+#
+# Last updated: 11 MAY 2016
+#
+# Model statement:
+#	y_t=0,u_t<=0
+#	y_t=1,u_t>0
+#	u_t~N(x_t*beta,1)
+#	beta~N(mu.beta,Sigma.beta)
+#
+# Reference:
+#
+# Required R packages: 
+#
+# Inputs:
+# y - vector of length n containing the 1's and 0's representing success during event t.
+#	Elements in y correspond to rows in the design matrix X. Note that the value of 
+#	y[1] corresponds to X[1,], y[2] corresponds to X[2,], etc.
+# X - design matrix of dimension n x qX containing covariates (plus
+#	intercept) for which inference is desired
+# priors - list of priors containing the following elements:
+#	1. mu.beta - prior mean for beta
+#	1. Sigma.beta - prior variance-covariance matrix for beta
+# start - list of starting values containing the following elements:
+#	1. beta - vector of starting values for coefficients
+# n.mcmc - number of desired MCMC iterations
+#
+#
 
-	###
-	### Brian M. Brost (10 AUG 2015)
-	### Regression for binary data using probit link
-	###
-
-	###
-	### Model statement:
-	### y=0,u_t<=0
-	### y=1,u_t>0
-	### u_t~N(x*beta,1)
-	### beta~N(0,sigma.beta^2*I)
-	###	
+binary.probit.glm.mcmc <- function(y,X,priors,start,n.mcmc){
 
 	###
 	###  Libraries and Subroutines

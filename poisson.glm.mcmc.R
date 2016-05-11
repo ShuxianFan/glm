@@ -1,6 +1,6 @@
 #
 #
-# Bayesian Poisson generalized linear model
+# Bayesian Poisson generalized linear model for count data
 #
 # Function name: poisson.glm.MCMC
 #

@@ -76,21 +76,58 @@
 \begin_layout Standard
 \noindent
 \align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="bottom" width="4.9in">
+<column alignment="right" valignment="bottom" width="1.25in">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \shape smallcaps
 \size larger
-Poisson Generalized Linear Model for Count Data
+Generalized Linear Model for Binomial
 \end_layout
 
-\begin_layout Standard
-\align center
+\begin_layout Plain Layout
+\begin_inset VSpace 0.25cm
+\end_inset
+
+
+\shape smallcaps
+\size larger
+Data with Logit Link
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 Brian M.
- Brost
+ Brost 
 \end_layout
 
-\begin_layout Standard
-\align center
-18 March 2016
+\begin_layout Plain Layout
+10 May 2016
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset VSpace -0.5cm
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -98,7 +135,7 @@ Brian M.
 \align center
 \begin_inset CommandInset line
 LatexCommand rule
-width "75col%"
+width "100col%"
 height "0.5pt"
 
 \end_inset
@@ -111,7 +148,8 @@ Description
 \end_layout
 
 \begin_layout Standard
-A generarlized linear model for count data.
+A generalized linear model for binomially distributed data using the logit
+ link.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -119,9 +157,9 @@ Implementation
 \end_layout
 
 \begin_layout Standard
-The file poisson.glm.sim.R simulates data according to the model statement
- presented below, and poisson.glm.mcmc.R contains the MCMC algorithm for model
- fitting.
+The file binomial.logit.glm.sim.R simulates data according to the model statement
+ presented below, and binomial.logit.glm.mcmc.R contains the MCMC algorithm
+ for model fitting.
  
 \end_layout
 
@@ -134,29 +172,56 @@ Let
 \begin_inset Formula $z_{i}$
 \end_inset
 
+ be the number of 
+\begin_inset Quotes eld
+\end_inset
+
+successes
+\begin_inset Quotes erd
+\end_inset
+
+ (i.e., 
+\begin_inset Formula $z_{i}$
+\end_inset
+
+ are integers greater than or equal to 0) out of 
+\begin_inset Formula $N_{i}$
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+trials
+\begin_inset Quotes erd
+\end_inset
+
+ during event 
+\begin_inset Formula $i$
+\end_inset
+
 , for 
 \begin_inset Formula $i=1,\ldots,n$
 \end_inset
 
-, be observed count data (i.e., 
+.
+ Also let 
+\begin_inset Formula $\mathbf{x}_{i}$
+\end_inset
+
+ be a vector of covariates associated with 
 \begin_inset Formula $z_{i}$
 \end_inset
 
- are integers greater than or equal to 0).
- Also let 
-\begin_inset Formula $\mathbf{X}$
-\end_inset
-
- be a design matrix containing covariates for which inference is desired,
- and the vector 
+ for which inference is desired, and the vector 
 \begin_inset Formula $\boldsymbol{\beta}$
 \end_inset
 
  be the corresponding coefficients.
 \begin_inset Formula 
 \begin{eqnarray*}
-z_{i} & \sim & \text{Pois}\left(\lambda_{i}\right)\\
-\log\left(\lambda_{i}\right) & = & \mathbf{x}_{i}^{\prime}\boldsymbol{\beta}\\
+z_{i} & \sim & \text{Binom}\left(N_{i},p_{i}\right)\\
+\text{logit}\left(p_{i}\right) & = & \mathbf{x}_{i}^{\prime}\boldsymbol{\beta}\\
 \boldsymbol{\beta} & \sim & {\cal N}(\mathbf{0},\sigma_{\beta}^{2}\mathbf{I})
 \end{eqnarray*}
 
@@ -182,8 +247,8 @@ Regression coefficients (
 
 \begin_inset Formula 
 \begin{eqnarray*}
-[\boldsymbol{\beta}|\cdot] & \propto & \prod_{i=1}^{n}\left[z_{i}|\boldsymbol{\beta}\right]\left[\boldsymbol{\beta}\right]\\
- & \propto & \prod_{i=1}^{n}\text{Pois}(z_{i}\mid\mathbf{x}_{i}^{\prime}\boldsymbol{\beta}){\cal N}(\boldsymbol{\beta}|\mathbf{0},\sigma_{\beta}^{2}\mathbf{I}).
+[\boldsymbol{\beta}|\cdot] & \propto & \prod_{i=1}^{n}\left[p_{i}|\boldsymbol{\beta}\right]\left[\boldsymbol{\beta}\right]\\
+ & \propto & \prod_{i=1}^{n}\text{Binom}(z_{i}\mid\mathbf{x}_{i}^{\prime}\boldsymbol{\beta}){\cal N}(\boldsymbol{\beta}|\mathbf{0},\sigma_{\beta}^{2}\mathbf{I}).
 \end{eqnarray*}
 
 \end_inset

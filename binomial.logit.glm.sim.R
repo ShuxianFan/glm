@@ -26,10 +26,10 @@ sum(z)
 ### Fit model
 ##########################################################
 
-source('~/Documents/git/GLM/binomial/binomial.glm.mcmc.R')
+source('~/Documents/git/GLM/binomial.logit.glm.mcmc.R')
 priors <- list(sigma.beta=5)
 tune <- list(beta=0.25)
 start <- list(beta=coef(glm(cbind(z,N-z) ~ 0+X, family=binomial("logit"))))
-out1 <- binomial.glm.mcmc(z,N=N,X,priors,start,tune,n.mcmc=50000)
+out1 <- binomial.logit.glm.mcmc(z,N=N,X,priors,start,tune,n.mcmc=50000)
 
 matplot(out1$beta, type="l", lty=1);abline(h=beta,col=1:qX,lty=3)

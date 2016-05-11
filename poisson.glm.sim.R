@@ -16,9 +16,9 @@ z <- rpois(n,lambda)  # observed counts
 ### Fit model
 ##########################################################
 
-source('~/Documents/git/GLM/poisson/poisson.glm.mcmc.R')
+source('~/Documents/git/GLM/poisson.glm.mcmc.R')
 priors <- list(sigma.beta=5)
-tune <- list(beta=0.25)
+tune <- list(beta=0.1)
 start <- list(beta=coef(glm(z ~ 0+X, family=poisson())))
 out1 <- poisson.glm.mcmc(z,X,priors,start,tune,n.mcmc=5000)
 

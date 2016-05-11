@@ -76,21 +76,58 @@
 \begin_layout Standard
 \noindent
 \align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="bottom" width="4.9in">
+<column alignment="right" valignment="bottom" width="1.25in">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \shape smallcaps
 \size larger
-Negative Binomial Generalized Linear Model for Count Data
+Generalized Linear Model for Binomial
 \end_layout
 
-\begin_layout Standard
-\align center
+\begin_layout Plain Layout
+\begin_inset VSpace 0.25cm
+\end_inset
+
+
+\shape smallcaps
+\size larger
+Data using the Logit Link
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 Brian M.
- Brost
+ Brost 
 \end_layout
 
-\begin_layout Standard
-\align center
-23 March 2016
+\begin_layout Plain Layout
+10 May 2016
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset VSpace -0.5cm
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -98,7 +135,7 @@ Brian M.
 \align center
 \begin_inset CommandInset line
 LatexCommand rule
-width "75col%"
+width "100col%"
 height "0.5pt"
 
 \end_inset
@@ -111,7 +148,8 @@ Description
 \end_layout
 
 \begin_layout Standard
-A generarlized linear model for count data.
+A generalized linear model for binomially distributed data using the logit
+ link.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -119,8 +157,9 @@ Implementation
 \end_layout
 
 \begin_layout Standard
-The file nb.glm.sim.R simulates data according to the model statement presented
- below, and nb.glm.mcmc.R contains the MCMC algorithm for model fitting.
+The file binomial.logit.glm.sim.R simulates data according to the model statement
+ presented below, and binomial.logit.glm.mcmc.R contains the MCMC algorithm
+ for model fitting.
  
 \end_layout
 
@@ -133,15 +172,39 @@ Let
 \begin_inset Formula $z_{i}$
 \end_inset
 
+ be the number of 
+\begin_inset Quotes eld
+\end_inset
+
+successes
+\begin_inset Quotes erd
+\end_inset
+
+ (i.e., 
+\begin_inset Formula $z_{i}$
+\end_inset
+
+ are integers greater than or equal to 0) out of 
+\begin_inset Formula $N_{i}$
+\end_inset
+
+ 
+\begin_inset Quotes eld
+\end_inset
+
+trials
+\begin_inset Quotes erd
+\end_inset
+
+ during event 
+\begin_inset Formula $i$
+\end_inset
+
 , for 
 \begin_inset Formula $i=1,\ldots,n$
 \end_inset
 
-, be observed count data (i.e., 
-\begin_inset Formula $z_{i}$
-\end_inset
-
- are integers greater than or equal to 0).
+.
  Also let 
 \begin_inset Formula $\mathbf{x}_{i}$
 \end_inset
@@ -157,29 +220,14 @@ Let
  be the corresponding coefficients.
 \begin_inset Formula 
 \begin{eqnarray*}
-z_{i} & \sim & \text{NB}\left(\lambda_{i},\alpha\right)\\
-\log\left(\lambda_{i}\right) & = & \mathbf{x}_{i}^{\prime}\boldsymbol{\beta}\\
-\boldsymbol{\beta} & \sim & {\cal N}(\mathbf{0},\sigma_{\beta}^{2}\mathbf{I})\\
-\alpha & \sim & \text{Gamma}(a,b),
+z_{i} & \sim & \text{Binom}\left(N_{i},p_{i}\right)\\
+\text{logit}\left(p_{i}\right) & = & \mathbf{x}_{i}^{\prime}\boldsymbol{\beta}\\
+\boldsymbol{\beta} & \sim & {\cal N}(\mathbf{0},\sigma_{\beta}^{2}\mathbf{I})
 \end{eqnarray*}
 
 \end_inset
 
-where 
-\begin_inset Formula $\text{E}\left[z_{i}\right]=\lambda_{i}$
-\end_inset
 
- and 
-\begin_inset Formula $\text{Var}\left[z_{i}\right]=\lambda_{i}+\frac{\lambda_{i}^{2}}{\alpha}$
-\end_inset
-
-.
- In this model, the random effects have been marginalized out.
- For the unitegrated version, see Zhou et al.
- (2012).
- Lognormal and gamma mixed negative binomial regression.
- Proceedings of the International Conference on Machine Learning.
- International Conference on Machine Learning, 2012:1343–1350.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -199,48 +247,14 @@ Regression coefficients (
 
 \begin_inset Formula 
 \begin{eqnarray*}
-\left[\boldsymbol{\beta}\mid\cdot\right] & \propto & \prod_{i=1}^{n}\left[z_{i}\mid\boldsymbol{\beta},\alpha\right]\left[\boldsymbol{\beta}\right]\\
- & \propto & \prod_{i=1}^{n}\text{NB}\left(z_{i}\mid\mathbf{x}_{i}^{\prime}\boldsymbol{\beta},\alpha\right){\cal N}\left(\boldsymbol{\beta}\mid\mathbf{0},\sigma_{\beta}^{2}\mathbf{I}\right).
+[\boldsymbol{\beta}|\cdot] & \propto & \prod_{i=1}^{n}\left[p_{i}|\boldsymbol{\beta}\right]\left[\boldsymbol{\beta}\right]\\
+ & \propto & \prod_{i=1}^{n}\text{Binom}(z_{i}\mid\mathbf{x}_{i}^{\prime}\boldsymbol{\beta}){\cal N}(\boldsymbol{\beta}|\mathbf{0},\sigma_{\beta}^{2}\mathbf{I}).
 \end{eqnarray*}
 
 \end_inset
 
 The update for 
 \begin_inset Formula $\boldsymbol{\beta}$
-\end_inset
-
- proceeds using Metropolis-Hastings.
- 
-\end_layout
-
-\begin_layout Standard
-\begin_inset VSpace bigskip
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\noindent
-
-\emph on
-Dispersion (i.e., size) parameter (
-\begin_inset Formula $\alpha$
-\end_inset
-
-):
-\emph default
-
-\begin_inset Formula 
-\begin{eqnarray*}
-\left[\alpha\mid\cdot\right] & \propto & \prod_{i=1}^{n}\left[z_{i}|\boldsymbol{\beta},\alpha\right]\left[\alpha\right]\\
- & \propto & \prod_{i=1}^{n}\text{NB}\left(z_{i}\mid\mathbf{x}_{i}^{\prime}\boldsymbol{\beta},\alpha\right)\text{Gamma}\left(\alpha\mid a,b\right).
-\end{eqnarray*}
-
-\end_inset
-
-The update for 
-\begin_inset Formula $\alpha$
 \end_inset
 
  proceeds using Metropolis-Hastings.

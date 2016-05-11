@@ -1,6 +1,6 @@
 #
 #
-# Bayesian negative binomial generalized linear model
+# Bayesian negative binomial generalized linear model for count data
 #
 # Function name: nb.glm.MCMC
 #

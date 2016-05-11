@@ -76,21 +76,58 @@
 \begin_layout Standard
 \noindent
 \align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="left" valignment="bottom" width="4.9in">
+<column alignment="right" valignment="bottom" width="1.25in">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 
 \shape smallcaps
 \size larger
-Generalized Linear Model for Binary Data using the Probit Link
+Generalized Linear Model for Binary
 \end_layout
 
-\begin_layout Standard
-\align center
+\begin_layout Plain Layout
+\begin_inset VSpace 0.25cm
+\end_inset
+
+
+\shape smallcaps
+\size larger
+Data using the Probit Link
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
 Brian M.
- Brost
+ Brost 
 \end_layout
 
-\begin_layout Standard
-\align center
-10 August 2015
+\begin_layout Plain Layout
+11 May 2016
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset VSpace -0.5cm
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -98,7 +135,7 @@ Brian M.
 \align center
 \begin_inset CommandInset line
 LatexCommand rule
-width "75col%"
+width "100col%"
 height "0.5pt"
 
 \end_inset
@@ -111,7 +148,7 @@ Description
 \end_layout
 
 \begin_layout Standard
-A regression model for binary data using the probit link.
+A generalized linear model for binary data using the probit link.
 \end_layout
 
 \begin_layout Subsubsection*
@@ -119,8 +156,9 @@ Implementation
 \end_layout
 
 \begin_layout Standard
-The file probit.glm.sim.R simulates data according to the model statement presented
- below, and probit.glm.mcmc.R contains the MCMC algorithm for model fitting.
+The file binary.probit.glm.sim.R simulates data according to the model statement
+ presented below, and binary.probit.glm.mcmc.R contains the MCMC algorithm for
+ model fitting.
  
 \end_layout
 
