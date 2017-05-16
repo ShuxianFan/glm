@@ -103,12 +103,12 @@ binomial.logit.glm.mcmc <- function(z,N,X,priors,start,tune,adapt=TRUE,n.mcmc=10
 		###
 		### Update beta
 		### 
-		
+# browser()		
 		beta.star <- rnorm(qX,beta,tune$beta)
 		p.star <- expit(X%*%beta.star)  # binomial probability
-  		mh.0 <- sum(dbinom(z,1000,p,log=TRUE))+
+  		mh.0 <- sum(dbinom(z,N,p,log=TRUE))+
 			sum(dnorm(beta,mu.beta,sigma.beta,log=TRUE))
-		mh.star <- sum(dbinom(z,1000,p.star,log=TRUE))+
+		mh.star <- sum(dbinom(z,N,p.star,log=TRUE))+
 			sum(dnorm(beta.star,mu.beta,sigma.beta,log=TRUE))
 		if(exp(mh.star-mh.0)>runif(1)){
 			beta <- beta.star
